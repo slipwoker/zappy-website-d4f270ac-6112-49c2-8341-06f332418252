@@ -7,37 +7,37 @@
 ## Pages
 
 ### בית
-https://f-d4f270ac.zappy5.app
+https://example.com
 גלו את F+, הבית החדש לזמרים ויוצרים המחפשים שיתופי פעולה מוזיקליים והפקות מקוריות. התחברו למפיקים, אמנים ורעיונות שידחפו את המוזיקה שלכם קדימה. הצטרפו עכשיו לקהילה היוצרת!
 
 ### שיתופי פעולה
-https://f-d4f270ac.zappy5.app/collaborations
+https://example.com/collaborations
 חפשו וצרו שיתופי פעולה עם מפיקים ומוזיקאים שמבינים את הוויב שלכם. ב-F+ תמצאו את השותף המושלם להפקה הבאה, מסקיצה ועד להיט. התחילו ליצור קסם מוזיקלי עוד היום!
 
 ### לאמנים
-https://f-d4f270ac.zappy5.app/for-artists
+https://example.com/for-artists
 אמנים, זה הזמן להאיר את הכישרון שלכם. F+ מחברת אתכם עם מפיקים ויוצרים לקידום הפקות מקוריות, צמיחה אמנותית וחשיפה אמיתית בתעשייה. התחילו לבנות את הסאונד שלכם עכשיו!
 
 ### צור קשר
-https://f-d4f270ac.zappy5.app/contact
+https://example.com/contact
 יש לכם שאלה על שיתופי פעולה, הפקות או פשוט בא לכם להגיד היי? צרו קשר עם צוות F+ ונתחיל לבנות יחד את הצליל הבא שלכם. אנחנו כאן כדי לשמוע אתכם!
 
 ### תודה שפניתם אלינו
-https://f-d4f270ac.zappy5.app/thank-you
+https://example.com/thank-you
 F+ - תודה שפניתם אלינו
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://f-d4f270ac.zappy5.app/privacy
+https://example.com/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://f-d4f270ac.zappy5.app/terms
+https://example.com/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://f-d4f270ac.zappy5.app/accessibility
+https://example.com/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
@@ -47,8 +47,8 @@ Information about WCAG compliance and accessibility features.
 - (No contact details configured yet.)
 
 ### Contact form
-- URL: https://f-d4f270ac.zappy5.app/contact
-- Endpoint: https://f-d4f270ac.zappy5.app/api/email/contact-form
+- URL: https://example.com/contact
+- Endpoint: https://example.com/api/email/contact-form
 - Method: POST
 - Content-Type: application/json
 - Fields:
@@ -79,6 +79,6 @@ Music & Entertainment
 
 # Machine-readable feeds
 
-- Sitemap (XML): https://f-d4f270ac.zappy5.app/sitemap.xml
-- Robots: https://f-d4f270ac.zappy5.app/robots.txt
-- Flattened page text (for LLMs): https://f-d4f270ac.zappy5.app/llms-full.txt
+- Sitemap (XML): https://example.com/sitemap.xml
+- Robots: https://example.com/robots.txt
+- Flattened page text (for LLMs): https://example.com/llms-full.txt
