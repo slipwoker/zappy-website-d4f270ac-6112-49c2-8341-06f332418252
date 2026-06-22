@@ -1,0 +1,84 @@
+# F+ — Generative Engine Optimization Map
+
+> A platform designed for singers and vocalists seeking musical collaborations and production partnerships. The site aims to connect artists with producers and fellow musicians, fostering creative synergies in the music industry. The vibe is creative, dynamic, and community-driven, centered around the world of music creation and artistic growth.
+
+---
+
+## Pages
+
+### בית
+https://f-d4f270ac.zappy5.app
+גלו את F+, הבית החדש לזמרים ויוצרים המחפשים שיתופי פעולה מוזיקליים והפקות מקוריות. התחברו למפיקים, אמנים ורעיונות שידחפו את המוזיקה שלכם קדימה. הצטרפו עכשיו לקהילה היוצרת!
+
+### שיתופי פעולה
+https://f-d4f270ac.zappy5.app/collaborations
+חפשו וצרו שיתופי פעולה עם מפיקים ומוזיקאים שמבינים את הוויב שלכם. ב-F+ תמצאו את השותף המושלם להפקה הבאה, מסקיצה ועד להיט. התחילו ליצור קסם מוזיקלי עוד היום!
+
+### לאמנים
+https://f-d4f270ac.zappy5.app/for-artists
+אמנים, זה הזמן להאיר את הכישרון שלכם. F+ מחברת אתכם עם מפיקים ויוצרים לקידום הפקות מקוריות, צמיחה אמנותית וחשיפה אמיתית בתעשייה. התחילו לבנות את הסאונד שלכם עכשיו!
+
+### צור קשר
+https://f-d4f270ac.zappy5.app/contact
+יש לכם שאלה על שיתופי פעולה, הפקות או פשוט בא לכם להגיד היי? צרו קשר עם צוות F+ ונתחיל לבנות יחד את הצליל הבא שלכם. אנחנו כאן כדי לשמוע אתכם!
+
+### תודה שפניתם אלינו
+https://f-d4f270ac.zappy5.app/thank-you
+F+ - תודה שפניתם אלינו
+
+## Legal & Policy
+
+### Privacy Policy
+https://f-d4f270ac.zappy5.app/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://f-d4f270ac.zappy5.app/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://f-d4f270ac.zappy5.app/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+## How to Contact Us
+
+- (No contact details configured yet.)
+
+### Contact form
+- URL: https://f-d4f270ac.zappy5.app/contact
+- Endpoint: https://f-d4f270ac.zappy5.app/api/email/contact-form
+- Method: POST
+- Content-Type: application/json
+- Fields:
+  - `name` (text)
+  - `email` (email)
+  - `phone` (tel)
+  - `message` (textarea)
+  - `privacy_consent` (checkbox)
+
+---
+
+# Business Context (for LLM understanding)
+
+## About F+
+A platform designed for singers and vocalists seeking musical collaborations and production partnerships. The site aims to connect artists with producers and fellow musicians, fostering creative synergies in the music industry. The vibe is creative, dynamic, and community-driven, centered around the world of music creation and artistic growth.
+
+## Target Audience
+- זמרים המחפשים שיתופי פעולה והפקה מוזיקלית
+- זמרים מחפשי שיתופי פעולה
+- יוצרי מוזיקה עצמאיים
+- כותבי שירים ומלחינים
+- זמרים מתחילים
+
+## Industry
+Music & Entertainment
+
+---
+
+# Machine-readable feeds
+
+- Sitemap (XML): https://f-d4f270ac.zappy5.app/sitemap.xml
+- Robots: https://f-d4f270ac.zappy5.app/robots.txt
+- Flattened page text (for LLMs): https://f-d4f270ac.zappy5.app/llms-full.txt

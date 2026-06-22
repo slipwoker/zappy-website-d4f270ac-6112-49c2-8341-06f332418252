@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>הפלטפורמה לזמרים ויוצרים שמחפשים את הצליל הבא — F+</title>
+    <meta name="description" content="גלו את F+, הבית החדש לזמרים ויוצרים המחפשים שיתופי פעולה מוזיקליים והפקות מקוריות. התחברו למפיקים, אמנים ורעיונות שידחפו את המוזיקה שלכם קדימה. הצטרפו עכשיו לקהילה היוצרת!">
+    <meta name="keywords" content="diana f+ film, שיתופי פעולה מוזיקליים, פלטפורמה לזמרים, הפקה מוזיקלית, diana f+ flash">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'd4f270ac-6112-49c2-8341-06f332418252',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        var clickMeta = {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        };
+        
+        trackEvent('click', clickMeta);
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        var navMeta = {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        };
+        
+        trackEvent('navigation', navMeta);
+      }
+    }, true);
+  }
+  
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="הפלטפורמה לזמרים ויוצרים שמחפשים את הצליל הבא — F+">
+    <meta property="og:description" content="גלו את F+, הבית החדש לזמרים ויוצרים המחפשים שיתופי פעולה מוזיקליים והפקות מקוריות. התחברו למפיקים, אמנים ורעיונות שידחפו את המוזיקה שלכם קדימה. הצטרפו עכשיו לקהילה היוצרת!">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="הפלטפורמה לזמרים ויוצרים שמחפשים את הצליל הבא — F+">
+    <meta name="twitter:description" content="גלו את F+, הבית החדש לזמרים ויוצרים המחפשים שיתופי פעולה מוזיקליים והפקות מקוריות. התחברו למפיקים, אמנים ורעיונות שידחפו את המוזיקה שלכם קדימה. הצטרפו עכשיו לקהילה היוצרת!">
+    <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .skip-link { position: absolute; top: 0; left: 0; transform: translateY(-200%); padding: 12px 18px; background: var(--bg-dark, #1a1a1a); color: var(--text-light, #fff); font-weight: 600; border-radius: 0 0 8px 0; z-index: 10000; }
+    .skip-link:focus { transform: none; outline: 2px solid var(--ring, #fff); outline-offset: 2px; }
+    :focus-visible { outline: 2px solid var(--ring, currentColor); outline-offset: 3px; }
+  </style>
+
+
+  
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+    <script>window.ZAPPY_WEBSITE_ID = "d4f270ac-6112-49c2-8341-06f332418252"; window.ZAPPY_API_BASE = "https://api.zappy5.com";</script>
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: var(--text-dark, #333) !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+      [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 10px !important; padding-right: 28px !important; }
+      .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus (exclude catalog sub-menus that use <a> children instead of <li>) */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))):not(:has(> a)), .sub-menu:not(:has(li)):not(:has(> a)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .navbar .sub-menu.mobile-expanded, .nav-menu .sub-menu.mobile-expanded, #navMenu .sub-menu.mobile-expanded { max-height: none !important; overflow-y: visible !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-dark) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-dark) !important; white-space: normal !important; }
+        .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+        [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 0 !important; padding-right: 28px !important; }
+        .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+        .nav-menu.active, #navMenu.active { max-width: 100vw !important; overflow-x: hidden !important; box-sizing: border-box !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-dark) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      html[dir="rtl"] .whatsapp-float { right: 20px !important; left: auto !important; }
+      html[dir="ltr"] .whatsapp-float, html:not([dir]) .whatsapp-float { left: 20px !important; right: auto !important; }
+      html[dir="rtl"] #mic-access-tool-general-button, html[dir="rtl"] .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="rtl"] ._access-icon { left: 20px !important; right: auto !important; }
+      html[dir="ltr"] #mic-access-tool-general-button, html[dir="ltr"] .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="ltr"] ._access-icon,
+      html:not([dir]) #mic-access-tool-general-button, html:not([dir]) .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool #mic-access-tool-general-button,
+      html:not([dir]) ._access-icon { right: 20px !important; left: auto !important; }
+      @media (max-width: 768px) { .whatsapp-float { display: flex !important; } }
+      @media (min-width: 769px) { .whatsapp-float { display: flex !important; } }
+      @media (max-width: 768px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon { display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
+        #mic-access-tool-box.opened-mic-access-tool, .mic-access-tool-box.opened-mic-access-tool,
+        #mic-init-access-tool #mic-access-tool-box.opened-mic-access-tool {
+          visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
+        }
+      }
+      @media (min-width: 769px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon { display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
+        #mic-access-tool-box.opened-mic-access-tool, .mic-access-tool-box.opened-mic-access-tool,
+        #mic-init-access-tool #mic-access-tool-box.opened-mic-access-tool {
+          visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
+        }
+      }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#main">דלג לתוכן הראשי</a>
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" data-phone aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link"><img class="logo" src="/assets/site-----image-1.webp" alt="F+"></a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/">בית</a></li><li><a href="/collaborations">שיתופי פעולה</a></li><li><a href="/for-artists">לאמנים</a></li><li class="mobile-contact-link nav-cta-mobile-item"><a href="/contact" class="nav-cta-btn">צור קשר</a></li></ul></div>
+    
+    
+    
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .navbar,
+          nav.navbar {
+            min-height: 70px !important;
+          }
+
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            margin-top: auto !important;
+            margin-bottom: auto !important;
+            transform: none !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-light)) !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+          }
+
+          html[data-zappy-site-type="ecommerce"] .phone-header-btn,
+          body[data-zappy-site-type="ecommerce"] .phone-header-btn,
+          html[data-zappy-site-type="ecommerce"] header .phone-header-btn,
+          html[data-zappy-site-type="ecommerce"] nav .phone-header-btn {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '0', 'important');
+          mobileToggle.style.setProperty('bottom', '0', 'important');
+          mobileToggle.style.setProperty('margin-top', 'auto', 'important');
+          mobileToggle.style.setProperty('margin-bottom', 'auto', 'important');
+          mobileToggle.style.setProperty('transform', 'none', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '0', 'important');
+          phoneBtn.style.setProperty('bottom', '0', 'important');
+          phoneBtn.style.setProperty('margin-top', 'auto', 'important');
+          phoneBtn.style.setProperty('margin-bottom', 'auto', 'important');
+          phoneBtn.style.setProperty('transform', 'none', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu handler (shared by click and touchend)
+    function handleToggle(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+      const closeIcon = newToggle.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        document.body.classList.remove('menu-open');
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('menu-open');
+        console.log('[Navbar] Menu opened');
+      }
+    }
+    
+    // Use click for desktop/emulation and touchend as iOS Safari fallback.
+    // Prevent double-fire with a timestamp guard.
+    var lastToggleTime = 0;
+    function guardedToggle(e) {
+      var now = Date.now();
+      if (now - lastToggleTime < 300) return;
+      lastToggleTime = now;
+      handleToggle(e);
+    }
+    
+    newToggle.addEventListener('click', guardedToggle);
+    newToggle.addEventListener('touchend', guardedToggle);
+
+    // Close the full-screen overlay menu on Escape
+    document.addEventListener('keydown', function(e) {
+      if ((e.key === 'Escape' || e.key === 'Esc') && navMenu.classList.contains('active')) {
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        document.body.classList.remove('menu-open');
+        console.log('[Navbar] Menu closed (Escape)');
+      }
+    });
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        document.body.classList.remove('menu-open');
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '[business_phone]';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // WhatsApp button visibility is now controlled via CSS (siteSettings).
+    // No JS-based desktop hiding — the button is visible on both mobile and desktop by default.
+  });
+})();
+
+</script>
+  
+  <main id="main">
+    <section data-band-index="0" class="index-hero-section" data-layout-spec="בית-hero" data-hero-treatment="fade-bleed" style="--hero-fade-color: var(--bg-light);" data-hero-type="fullscreen-scrim"><img loading="eager" fetchpriority="high" class="hero-fade-img" data-hero-bg="true" data-placeholder="index-hero-image-1" data-context="Young female vocalist singing passionately in a bright, modern recording studio with warm natural light and professional microphone setup, cinematic composition with subject on the right side" width="1200" height="800" src="/assets/site-index-hero-image-1.webp" alt="זמרת באולפן הקלטות מואר"><div class="hero-fade-content"><h1 class="display-xl">המקום שבו הקול שלך פוגש את ההפקה המושלמת</h1><h3>F+ מחברת בין זמרים, מפיקים, יוצרים וכותבים לקהילה אחת שיוצרת מוזיקה ברמה הגבוהה ביותר</h3><div class="hero-meta-row"><span class="hero-meta-item"><svg data-element-type="icon" data-icon-type="svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>פופ • R&amp;B • רוק</span><span class="hero-meta-item"><svg data-element-type="icon" data-icon-type="svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>200+ שיתופי פעולה</span><span class="hero-meta-item"><svg data-element-type="icon" data-icon-type="svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>450+ דמואים</span><span class="hero-meta-item"><svg data-element-type="icon" data-icon-type="svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>הפקה מקצועית</span></div><div class="hero-cta-row"><a href="/contact" class="btn-primary">צור קשר עכשיו</a><a href="/collaborations" class="btn-secondary">גלו שיתופי פעולה</a></div></div><div class="index-hero-divider-wrapper"><svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,80 L0,45 Q80,30 160,42 T320,38 Q400,44 480,35 T640,42 Q720,38 800,44 T960,35 Q1040,42 1120,38 T1200,45 L1200,80 Z" fill="var(--bg-light)"/></svg></div></section>
+
+<section data-band-index="1" class="index-features-section" data-layout-spec="בית-features">
+  <div class="index-features-section__container">
+    <!-- Intro Block -->
+    <div class="index-features-section__intro">
+      <h2 class="index-features-section__title">הפלטפורמה שמחברת אותך לצליל הבא</h2>
+      <p class="index-features-section__subtitle">ב-F+ אנחנו יוצרים מרחב מקצועי שבו זמרים, יוצרים ומפיקים מוצאים זה את זה, משתפים פעולה ויוצרים מוזיקה שמרגשת את העולם.</p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="index-features-section__grid">
+      <!-- Card 1 -->
+      <article class="index-features-section__card">
+        <div class="index-features-section__card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+            <path d="M12 26C12 26 14 20 20 20C26 20 28 26 28 26" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="16" cy="15" r="2" fill="var(--primary)"/>
+            <circle cx="24" cy="15" r="2" fill="var(--primary)"/>
+            <path d="M20 14V18" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="index-features-section__card-title">התאמה חכמה לשיתופי פעולה</h3>
+        <p class="index-features-section__card-text">האלגוריתם שלנו מזהה את המנעד הקולי, הסגנון והשאיפות היצירתיות שלך, ומציע לך מפיקים ויוצרים שמתאימים בדיוק לפרויקט הבא שלך.</p>
+        <div class="index-features-section__card-meta">
+          <span class="index-features-section__meta-tag">ז'אנר: פופ / R&amp;B</span>
+          <span class="index-features-section__meta-tag">BPM: 90–140</span>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="index-features-section__card">
+        <div class="index-features-section__card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="10" width="24" height="20" rx="3" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+            <path d="M14 18V28" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M20 16V28" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M26 14V28" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="index-features-section__card-title">הצג את הזהות הקולית שלך</h3>
+        <p class="index-features-section__card-text">בנה פרופיל ווקאלי עשיר עם דמואים, טווח קולי וסגנונות מועדפים. תן למפיקים לשמוע אותך באמת – לא רק לקרוא עליך. הפוך כל אודישן לחוויה בלתי נשכחת.</p>
+        <div class="index-features-section__card-meta">
+          <span class="index-features-section__meta-tag">טווח: סופרן</span>
+          <span class="index-features-section__meta-tag">זמין להקלטות</span>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="index-features-section__card">
+        <div class="index-features-section__card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 26V14L28 20L12 26Z" stroke="var(--primary)" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+            <path d="M8 12V28" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="index-features-section__card-title">שותפויות הפקה בביטחון מלא</h3>
+        <p class="index-features-section__card-text">עבוד עם מפיקים מובילים בתעשייה, שתף פעולה על קטעים מקוריים, וקבל משוב מקצועי. כל שותפות מבוססת על אמון, שקיפות ותשוקה משותפת למוזיקה איכותית.</p>
+        <div class="index-features-section__card-meta">
+          <span class="index-features-section__meta-tag">קרדיטים מאומתים</span>
+          <span class="index-features-section__meta-tag">קהילה פעילה</span>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Bottom Divider -->
+  <div class="index-features-section__divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,58 L1200,58 L1200,60 Z" fill="var(--border-light)"/>
+      <path d="M0,55 L0,58 L40,58 L40,55 L42,52 L44,55 L46,58 L50,58 L50,55 L52,52 L54,55 L56,58 L60,58 L60,55 L62,52 L64,55 L66,58 L70,58 L70,55 L72,52 L74,55 L76,58 L80,58 L80,55 L82,52 L84,55 L86,58 L90,58 L90,55 L92,52 L94,55 L96,58 L100,58 L100,55 L102,52 L104,55 L106,58 L110,58 L110,55 L112,52 L114,55 L116,58 L120,58 L120,55 L122,52 L124,55 L126,58 L130,58 L130,55 L132,52 L134,55 L136,58 L140,58 L140,55 L142,52 L144,55 L146,58 L150,58 L150,55 L152,52 L154,55 L156,58 L160,58 L160,55 L162,52 L164,55 L166,58 L170,58 L170,55 L172,52 L174,55 L176,58 L180,58 L180,55 L182,52 L184,55 L186,58 L190,58 L190,55 L192,52 L194,55 L196,58 L200,58 L200,55 L202,52 L204,55 L206,58 L210,58 L210,55 L212,52 L214,55 L216,58 L220,58 L220,55 L222,52 L224,55 L226,58 L230,58 L230,55 L232,52 L234,55 L236,58 L240,58 L240,55 L242,52 L244,55 L246,58 L250,58 L250,55 L252,52 L254,55 L256,58 L260,58 L260,55 L262,52 L264,55 L266,58 L270,58 L270,55 L272,52 L274,55 L276,58 L280,58 L280,55 L282,52 L284,55 L286,58 L290,58 L290,55 L292,52 L294,55 L296,58 L300,58 L300,55 L302,52 L304,55 L306,58 L310,58 L310,55 L312,52 L314,55 L316,58 L320,58 L320,55 L322,52 L324,55 L326,58 L330,58 L330,55 L332,52 L334,55 L336,58 L340,58 L340,55 L342,52 L344,55 L346,58 L350,58 L350,55 L352,52 L354,55 L356,58 L360,58 L360,55 L362,52 L364,55 L366,58 L370,58 L370,55 L372,52 L374,55 L376,58 L380,58 L380,55 L382,52 L384,55 L386,58 L390,58 L390,55 L392,52 L394,55 L396,58 L400,58 L400,55 L402,52 L404,55 L406,58 L410,58 L410,55 L412,52 L414,55 L416,58 L420,58 L420,55 L422,52 L424,55 L426,58 L430,58 L430,55 L432,52 L434,55 L436,58 L440,58 L440,55 L442,52 L444,55 L446,58 L450,58 L450,55 L452,52 L454,55 L456,58 L460,58 L460,55 L462,52 L464,55 L466,58 L470,58 L470,55 L472,52 L474,55 L476,58 L480,58 L480,55 L482,52 L484,55 L486,58 L490,58 L490,55 L492,52 L494,55 L496,58 L500,58 L500,55 L502,52 L504,55 L506,58 L510,58 L510,55 L512,52 L514,55 L516,58 L520,58 L520,55 L522,52 L524,55 L526,58 L530,58 L530,55 L532,52 L534,55 L536,58 L540,58 L540,55 L542,52 L544,55 L546,58 L550,58 L550,55 L552,52 L554,55 L556,58 L560,58 L560,55 L562,52 L564,55 L566,58 L570,58 L570,55 L572,52 L574,55 L576,58 L580,58 L580,55 L582,52 L584,55 L586,58 L590,58 L590,55 L592,52 L594,55 L596,58 L600,58 L600,55 L602,52 L604,55 L606,58 L610,58 L610,55 L612,52 L614,55 L616,58 L620,58 L620,55 L622,52 L624,55 L626,58 L630,58 L630,55 L632,52 L634,55 L636,58 L640,58 L640,55 L642,52 L644,55 L646,58 L650,58 L650,55 L652,52 L654,55 L656,58 L660,58 L660,55 L662,52 L664,55 L666,58 L670,58 L670,55 L672,52 L674,55 L676,58 L680,58 L680,55 L682,52 L684,55 L686,58 L690,58 L690,55 L692,52 L694,55 L696,58 L700,58 L700,55 L702,52 L704,55 L706,58 L710,58 L710,55 L712,52 L714,55 L716,58 L720,58 L720,55 L722,52 L724,55 L726,58 L730,58 L730,55 L732,52 L734,55 L736,58 L740,58 L740,55 L742,52 L744,55 L746,58 L750,58 L750,55 L752,52 L754,55 L756,58 L760,58 L760,55 L762,52 L764,55 L766,58 L770,58 L770,55 L772,52 L774,55 L776,58 L780,58 L780,55 L782,52 L784,55 L786,58 L790,58 L790,55 L792,52 L794,55 L796,58 L800,58 L800,55 L802,52 L804,55 L806,58 L810,58 L810,55 L812,52 L814,55 L816,58 L820,58 L820,55 L822,52 L824,55 L826,58 L830,58 L830,55 L832,52 L834,55 L836,58 L840,58 L840,55 L842,52 L844,55 L846,58 L850,58 L850,55 L852,52 L854,55 L856,58 L860,58 L860,55 L862,52 L864,55 L866,58 L870,58 L870,55 L872,52 L874,55 L876,58 L880,58 L880,55 L882,52 L884,55 L886,58 L890,58 L890,55 L892,52 L894,55 L896,58 L900,58 L900,55 L902,52 L904,55 L906,58 L910,58 L910,55 L912,52 L914,55 L916,58 L920,58 L920,55 L922,52 L924,55 L926,58 L930,58 L930,55 L932,52 L934,55 L936,58 L940,58 L940,55 L942,52 L944,55 L946,58 L950,58 L950,55 L952,52 L954,55 L956,58 L960,58 L960,55 L962,52 L964,55 L966,58 L970,58 L970,55 L972,52 L974,55 L976,58 L980,58 L980,55 L982,52 L984,55 L986,58 L990,58 L990,55 L992,52 L994,55 L996,58 L1000,58 L1000,55 L1002,52 L1004,55 L1006,58 L1010,58 L1010,55 L1012,52 L1014,55 L1016,58 L1020,58 L1020,55 L1022,52 L1024,55 L1026,58 L1030,58 L1030,55 L1032,52 L1034,55 L1036,58 L1040,58 L1040,55 L1042,52 L1044,55 L1046,58 L1050,58 L1050,55 L1052,52 L1054,55 L1056,58 L1060,58 L1060,55 L1062,52 L1064,55 L1066,58 L1070,58 L1070,55 L1072,52 L1074,55 L1076,58 L1080,58 L1080,55 L1082,52 L1084,55 L1086,58 L1090,58 L1090,55 L1092,52 L1094,55 L1096,58 L1100,58 L1100,55 L1102,52 L1104,55 L1106,58 L1110,58 L1110,55 L1112,52 L1114,55 L1116,58 L1120,58 L1120,55 L1122,52 L1124,55 L1126,58 L1130,58 L1130,55 L1132,52 L1134,55 L1136,58 L1140,58 L1140,55 L1142,52 L1144,55 L1146,58 L1150,58 L1150,55 L1152,52 L1154,55 L1156,58 L1160,58 L1160,55 L1162,52 L1164,55 L1166,58 L1170,58 L1170,55 L1172,52 L1174,55 L1176,58 L1180,58 L1180,55 L1182,52 L1184,55 L1186,58 L1190,58 L1190,55 L1192,52 L1194,55 L1196,58 L1200,58 L1200,60 Z" fill="var(--bg-light)" opacity="0.15"/>
+    </svg>
+  </div>
+</section>
+
+<section data-band-index="2" class="index-showcase-section" data-layout-spec="בית-showcase">
+    <div class="index-showcase-section-container">
+        <!-- Editorial Column: START (Right in RTL) -->
+        <div class="editorial-column">
+            <h2 class="editorial-title">הבמה שלך להתחבר, ליצור ולהקליט</h2>
+            <p class="editorial-description">F+ נותנת לך את הכלים להציג את הקול שלך, להגדיר בדיוק מה את.ה מחפש.ים, וליצור חיבורים מוזיקליים אמיתיים. צרו פרופיל אמנים עשיר, הציגו את הסגנון הווקאלי, הרפרנסים וההשפעות שלכם, וספרו לעולם מהו שיתוף הפעולה הבא שלכם.</p>
+            
+            <div class="callouts-container">
+                <div class="callout-item">
+                    <div class="callout-icon-wrapper">
+                        <svg data-element-type="icon" data-icon-type="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="18" cy="16" r="3" fill="currentColor"/></svg>
+                    </div>
+                    <div class="callout-text">
+                        <h3 class="callout-title">הציגו את הצליל שלכם</h3>
+                        <p class="callout-desc">העלו דוגמאות שירה, ציינו את המנעד הווקאלי, ז'אנרים מועדפים ו-BPM אידיאלי לעבודה.</p>
+                    </div>
+                </div>
+                <div class="callout-item">
+                    <div class="callout-icon-wrapper">
+                        <svg data-element-type="icon" data-icon-type="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" fill="currentColor"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="callout-text">
+                        <h3 class="callout-title">מצאו את ההפקה המושלמת</h3>
+                        <p class="callout-desc">חפשו מפיקים מוזיקליים לפי סגנון, ציוד וניסיון. האזינו לעבודות קודמות והתחברו ישירות.</p>
+                    </div>
+                </div>
+                <div class="callout-item">
+                    <div class="callout-icon-wrapper">
+                        <svg data-element-type="icon" data-icon-type="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/><line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="2"/><line x1="9" y1="21" x2="9" y2="9" stroke="currentColor" stroke-width="2"/></svg>
+                    </div>
+                    <div class="callout-text">
+                        <h3 class="callout-title">קבעו סשן הקלטה</h3>
+                        <p class="callout-desc">סנכרנו יומנים, הגדירו זמינות, וצרו פרויקטים ישירות מהפלטפורמה. המוזיקה שלכם מחכה.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Column: END (Left in RTL) - Masonry Profile Cards -->
+        <div class="visual-column">
+            <div class="masonry-grid">
+                <!-- Card 1: Pop Vocalist -->
+                <div class="profile-card card-1">
+                    <div class="card-img-wrapper">
+                        <img loading="lazy" decoding="async" data-placeholder="index-showcase-image-1" data-context="Young female pop vocalist with expressive style, studio microphone in background, soft dramatic lighting, modern R&amp;B and pop vibe, creative Music &amp; Entertainment portrait" width="300" height="300" src="/assets/site-index-showcase-image-1.webp" alt="זמרת פופ יוצרת" class="profile-img">
+                        <span class="genre-badge">פופ</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="profile-name">מיה כהן</h3>
+                        <p class="profile-role">זמרת ויוצרת</p>
+                        <div class="meta-line">
+                            <span class="meta-label">מנעד:</span>
+                            <span class="meta-value">סופרן C3-F6</span>
+                        </div>
+                        <div class="meta-line">
+                            <span class="meta-label">מחפשת:</span>
+                            <span class="meta-value">מפיק אלקטרוני</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Songwriter -->
+                <div class="profile-card card-2">
+                    <div class="card-img-wrapper">
+                        <img loading="lazy" decoding="async" data-placeholder="index-showcase-image-2" data-context="Thoughtful male singer-songwriter with acoustic guitar, warm natural light, indie folk aesthetic, creative Music &amp; Entertainment portrait" width="300" height="350" src="/assets/site-index-showcase-image-2.webp" alt="יוצר וכותב שירים" class="profile-img">
+                        <span class="genre-badge">אינדי</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="profile-name">דניאל לוי</h3>
+                        <p class="profile-role">כותב ומלחין</p>
+                        <div class="meta-line">
+                            <span class="meta-label">השפעות:</span>
+                            <span class="meta-value">בון איבר, רדיוהד</span>
+                        </div>
+                        <div class="meta-line">
+                            <span class="meta-label">מחפש:</span>
+                            <span class="meta-value">מעבד ווקאלי</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Beat Producer -->
+                <div class="profile-card card-3">
+                    <div class="card-img-wrapper">
+                        <img loading="lazy" decoding="async" data-placeholder="index-showcase-image-3" data-context="Urban beat producer in a home studio, wearing headphones, surrounded by MIDI controllers and monitors, hip-hop and trap vibe, creative Music &amp; Entertainment portrait" width="300" height="320" src="/assets/site-index-showcase-image-3.webp" alt="מפיק ביטים" class="profile-img">
+                        <span class="genre-badge">היפ-הופ</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="profile-name">אדם גולן</h3>
+                        <p class="profile-role">מפיק מוזיקלי</p>
+                        <div class="meta-line">
+                            <span class="meta-label">BPM:</span>
+                            <span class="meta-value">70-160</span>
+                        </div>
+                        <div class="meta-line">
+                            <span class="meta-label">מחפש:</span>
+                            <span class="meta-value">זמרת R&amp;B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Vocal Arranger -->
+                <div class="profile-card card-4">
+                    <div class="card-img-wrapper">
+                        <img loading="lazy" decoding="async" data-placeholder="index-showcase-image-4" data-context="Professional female vocal arranger with sheet music, standing in a bright rehearsal space, gospel and soul influences, creative Music &amp; Entertainment portrait" width="300" height="280" src="/assets/site-index-showcase-image-4.webp" alt="מעבדת ווקאלית" class="profile-img">
+                        <span class="genre-badge">סול</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="profile-name">נועה ברק</h3>
+                        <p class="profile-role">מעבדת קולות</p>
+                        <div class="meta-line">
+                            <span class="meta-label">מומחיות:</span>
+                            <span class="meta-value">הרמוניות גוספל</span>
+                        </div>
+                        <div class="meta-line">
+                            <span class="meta-label">מחפשת:</span>
+                            <span class="meta-value">פרויקט פאנק</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Decorative Backplate (Peeking from bottom-end corner) -->
+            <div class="decorative-backplate" aria-hidden="true"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Divider: Broad Curved Cut -->
+    <div class="index-showcase-divider-wrapper">
+        <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,80 L0,20 Q150,45 300,25 T600,30 Q750,40 900,20 T1200,25 L1200,80 Z" fill="var(--bg-dark)"/>
+        </svg>
+    </div>
+</section>
+
+<section data-band-index="3" class="index-testimonials-section" data-layout-spec="בית-testimonials" dir="rtl">
+  <div class="index-testimonials-section__container">
+    <!-- Heading -->
+    <div class="index-testimonials-section__header">
+      <h2 class="index-testimonials-section__title">מה אומרים היוצרים שלנו</h2>
+      <p class="index-testimonials-section__subtitle">הפלטפורמה מחברת בין זמרים, פזמונאים ומפיקים ליצירת שיתופי פעולה משמעותיים</p>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="index-testimonials-section__stats">
+      <div class="index-testimonials-section__stat-item">
+        <span class="index-testimonials-section__stat-number">2,400+</span>
+        <span class="index-testimonials-section__stat-label">יוצרים פעילים</span>
+      </div>
+      <div class="index-testimonials-section__stat-divider" aria-hidden="true"></div>
+      <div class="index-testimonials-section__stat-item">
+        <span class="index-testimonials-section__stat-number">18,500+</span>
+        <span class="index-testimonials-section__stat-label">החלפות דמואים</span>
+      </div>
+      <div class="index-testimonials-section__stat-divider" aria-hidden="true"></div>
+      <div class="index-testimonials-section__stat-item">
+        <span class="index-testimonials-section__stat-number">960+</span>
+        <span class="index-testimonials-section__stat-label">התאמות יצירתיות</span>
+      </div>
+    </div>
+
+    <!-- Testimonial Cards -->
+    <div class="index-testimonials-section__grid">
+      <!-- Card 1 -->
+      <div class="index-testimonials-section__card">
+        <div class="index-testimonials-section__card-quote">
+          <svg class="index-testimonials-section__quote-icon" data-element-type="icon" data-icon-type="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 11H6V7H10M18 11H14V7H18M10 17H6V13L10 11M18 17H14V13L18 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="index-testimonials-section__card-text">"פלטפורמת F+ שינתה לחלוטין את הדרך שבה אני מוצאת שותפים ליצירה. מצאתי מפיק שהבין בדיוק את הסאונד שחיפשתי, והשיר שיצרנו יחד הגיע למקומות שלא דמיינתי."</p>
+        </div>
+        <div class="index-testimonials-section__card-author">
+          <div class="index-testimonials-section__avatar" aria-hidden="true">
+            <span>מ</span>
+          </div>
+          <div class="index-testimonials-section__author-info">
+            <span class="index-testimonials-section__author-name">מיכל לוי</span>
+            <span class="index-testimonials-section__author-role">זמרת ויוצרת</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="index-testimonials-section__card">
+        <div class="index-testimonials-section__card-quote">
+          <svg class="index-testimonials-section__quote-icon" data-element-type="icon" data-icon-type="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 11H6V7H10M18 11H14V7H18M10 17H6V13L10 11M18 17H14V13L18 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="index-testimonials-section__card-text">"אחרי שנים של חיפושים, F+ הביאה לי את שיתוף הפעולה המדויק שהייתי צריך. השיחות כאן מקצועיות וממוקדות, והכימיה עם היוצרים האחרים פשוט מדהימה."</p>
+        </div>
+        <div class="index-testimonials-section__card-author">
+          <div class="index-testimonials-section__avatar" aria-hidden="true">
+            <span>י</span>
+          </div>
+          <div class="index-testimonials-section__author-info">
+            <span class="index-testimonials-section__author-name">יוסי כהן</span>
+            <span class="index-testimonials-section__author-role">מפיק מוזיקלי</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="index-testimonials-section__card">
+        <div class="index-testimonials-section__card-quote">
+          <svg class="index-testimonials-section__quote-icon" data-element-type="icon" data-icon-type="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 11H6V7H10M18 11H14V7H18M10 17H6V13L10 11M18 17H14V13L18 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="index-testimonials-section__card-text">"הקהילה ב-F+ היא בדיוק מה שהייתי צריכה. לא עוד הודעות סתמיות, אלא אמנים שבאמת מבינים מוזיקה. תוך שבועיים כבר הייתי באולפן עם צוות חלומות."</p>
+        </div>
+        <div class="index-testimonials-section__card-author">
+          <div class="index-testimonials-section__avatar" aria-hidden="true">
+            <span>נ</span>
+          </div>
+          <div class="index-testimonials-section__author-info">
+            <span class="index-testimonials-section__author-name">נועה אברהם</span>
+            <span class="index-testimonials-section__author-role">פזמונאית ומלחינה</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Divider -->
+  <div class="index-testimonials-section__divider-wrapper" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="index-testimonials-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1F2328" stop-opacity="1"/>
+          <stop offset="85%" stop-color="#1F2328" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#FAFAF7" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+      <!-- Main gradient fade -->
+      <path d="M0,80 L0,0 Q150,15 300,10 T600,15 Q750,10 900,15 T1200,10 L1200,80 Z" fill="var(--bg-light)"/>
+      <!-- Coral accent line -->
+      <path d="M0,12 Q150,27 300,22 T600,27 Q750,22 900,27 T1200,22" fill="var(--bg-light)" stroke="#FF7A59" stroke-width="2" stroke-opacity="0.8"/>
+    </svg>
+  </div>
+</section>
+
+<section data-band-index="4" class="index-cta-section" data-layout-spec="בית-cta">
+    <div class="index-cta-section__container">
+        <!-- Top decorative line -->
+        <div class="index-cta-section__line index-cta-section__line--top" aria-hidden="true"></div>
+
+        <!-- Content -->
+        <div class="index-cta-section__content">
+            <h2 class="index-cta-section__heading">בואו ליצור את הצליל הבא ביחד</h2>
+            <p class="index-cta-section__description">הצטרפו לרשת היוצרים שלנו, מצאו שיתופי פעולה משמעותיים והתחברו לשותפי ההפקה הנכונים שיהפכו את החזון המוזיקלי שלכם למציאות.</p>
+            
+            <div class="index-cta-section__actions">
+                <a href="/contact" class="index-cta-section__btn index-cta-section__btn--primary">
+                    הצטרפו עכשיו
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-element-type="icon" data-icon-type="svg">
+                        <path d="M10 4L14 8L10 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 8H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </a>
+                <a href="/collaborations" class="index-cta-section__btn index-cta-section__btn--secondary">
+                    גלו שיתופי פעולה
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom decorative line -->
+        <div class="index-cta-section__line index-cta-section__line--bottom" aria-hidden="true"></div>
+    </div>
+</section>
+  </main>
+  
+  <footer class="site-footer" dir="rtl">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Company Info -->
+      <div class="footer-col footer-info-col">
+        <img src="/assets/f-music-entertainment-logo.webp" alt="F+" class="logo">
+        <p class="footer-tagline">הפלטפורמה המובילה לחיבור בין זמרים, יוצרים ומפיקים. מקום שבו מוזיקה נולדת.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col footer-links-col">
+        <h4>ניווט מהיר</h4>
+        <ul class="footer-links">
+          <li><a href="/">בית</a></li>
+          <li><a href="/collaborations">שיתופי פעולה</a></li>
+          <li><a href="/for-artists">לאמנים</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="footer-col footer-contact-col">
+        <h4>צור קשר</h4>
+        <ul class="footer-contact">
+          <li>
+            <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+            <span class="contact-text"><a href="mailto:[business_email]">[business_email]</a></span>
+          </li>
+          <li>
+            <span class="contact-icon"><i class="fas fa-phone"></i></span>
+            <span class="contact-text"><a href="tel:[business_phone]">[business_phone]</a></span>
+          </li>
+          <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <span class="contact-text">[business_address]</span></a></li>
+        </ul>
+      </div>
+
+      <!-- Business Hours -->
+      <div class="footer-col footer-hours-col">
+        <h4>שעות פעילות</h4>
+        <ul class="footer-hours">
+          <li><a href="/"><span class="hours-day">ימים א'–ה'</span> <span class="hours-time">09:00–18:00</span></a></li>
+          <li><a href="/"><span class="hours-day">יום ו'</span> <span class="hours-time">09:00–13:00</span></a></li>
+          <li><a href="/"><span class="hours-day">שבת</span> <span class="hours-time">סגור</span></a></li>
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div class="footer-col footer-social-col">
+        <h4>עקבו אחרינו</h4>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" data-zappy-social-placeholder="true"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram" data-zappy-social-placeholder="true"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="WhatsApp" data-zappy-social-placeholder="true"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-left">
+        <span class="footer-copyright">© 2026 F+. כל הזכויות שמורות.</span>
+      </div>
+      <div class="footer-bottom-right">
+        <a href="/privacy">מדיניות פרטיות</a>
+        <span class="footer-divider">|</span>
+        <a href="/terms">תנאי שימוש</a>
+        <span class="footer-divider">|</span>
+        <a href="/accessibility">נגישות</a>
+        <span class="footer-divider">|</span>
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+</body>
+</html>
